@@ -1,0 +1,13 @@
+
+opencv-python>=4.5.5
+# NumPy must be <2.3.0 to remain compatible with some OpenCV wheels on Windows
+numpy<2.3.0,>=1.21.0
+
+# NOTE: Install PyTorch (torch + torchvision) separately using the PyTorch
+# official selector (https://pytorch.org/get-started/locally/) so you can
+# pick the correct CUDA-enabled wheel for your GPU/driver. Do NOT rely on
+# pip installing `torch` from this requirements file — use the command
+# recommended on the PyTorch website for your CUDA version.
+
+# Face-alignment (depends on PyTorch)
+face-alignment>=1.3.5
