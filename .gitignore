@@ -130,6 +130,8 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv2
+venv2/
 env/
 venv/
 ENV/
@@ -182,4 +184,4 @@ cython_debug/
 
 # Project outputs
 /outputs
-*.json
+/*.json

@@ -1,0 +1,158 @@
+{
+  "front": {
+    "landmarks_count": 68,
+    "face_shape": {
+      "shape": "oval",
+      "ratio": 1.0713837395439334
+    },
+    "eyes": {
+      "left": {
+        "shape": "hooded",
+        "eye_aspect_ratio": 0.1972971679466566,
+        "color": "#4c2f27"
+      },
+      "right": {
+        "shape": "almond",
+        "eye_aspect_ratio": 0.2841314789283369,
+        "color": "#412922"
+      }
+    },
+    "hair": {
+      "color": "#bc7b68",
+      "length": "long",
+      "hair_mask_ratio": 0.4152130003640653
+    },
+    "facial_metrics": {
+      "canthal_tilt": {
+        "angle_degrees": 7.125016348901798,
+        "classification": "positive"
+      },
+      "proportions": {
+        "upper_mm": 89.0,
+        "middle_mm": 63.953107821277925,
+        "lower_mm": 86.70063436907483,
+        "thirds_ratio": [
+          0.37136912119627885,
+          0.26685628594785227,
+          0.3617745886831822
+        ],
+        "largest_third": "upper",
+        "width_height_ratio": 0.9117583139187858
+      },
+      "maxilla": {
+        "mouth_nose_ratio": 1.8803234437972498,
+        "philtrum_length": 19.0
+      },
+      "lips": {
+        "total_lip_height": 26.30589287593181,
+        "mouth_opening": 0.0,
+        "classification": "full"
+      },
+      "basic_metrics": {
+        "interocular_distance": 135.79396157414365,
+        "face_height": 150.6154042586614,
+        "face_width": 218.50629281556172,
+        "jaw_width": 182.7840255602223,
+        "chin_width": 114.1402645870422,
+        "bizygomatic_width": 218.50629281556172,
+        "fwh_ratio": 1.4507566068096658,
+        "midface_length": 63.953107821277925,
+        "nose_length": 52.46903848937962,
+        "nose_width": 38.2099463490856,
+        "forehead_height_est": 52.0,
+        "left_eye_height": 11.0,
+        "right_eye_height": 15.0,
+        "eye_spacing": 98.25717389698436,
+        "eyebrow_spacing": 57.0701322935211,
+        "mouth_width": 71.84705978674423,
+        "jaw_width_norm": 0.83651607102459,
+        "chin_width_norm": 0.5223660294460558,
+        "mouth_width_norm": 0.3288100258393445,
+        "bizygomatic_width_norm": 1.0,
+        "left_eye_height_norm": 0.08100507469173428,
+        "right_eye_height_norm": 0.11046146548872855,
+        "eye_spacing_norm": 0.7235754282294492,
+        "jaw_width_px": 182.7840255602223,
+        "jaw_width_rel_img": 0.29866670843173576
+      }
+    }
+  },
+  "side": {
+    "landmarks_count": 68,
+    "face_shape": {
+      "shape": "oval",
+      "ratio": 1.196107476844813
+    },
+    "eyes": {
+      "left": {
+        "shape": "round",
+        "eye_aspect_ratio": 0.6495551471766189,
+        "color": "#392929"
+      },
+      "right": {
+        "shape": "round",
+        "eye_aspect_ratio": 2.2360675302862836,
+        "color": "#bc9e9b"
+      }
+    },
+    "hair": {
+      "color": "#442f27",
+      "length": "long",
+      "hair_mask_ratio": 0.5531373096722286
+    },
+    "facial_metrics": {
+      "canthal_tilt": {
+        "angle_degrees": 38.927543592792304,
+        "classification": "positive"
+      },
+      "proportions": {
+        "upper_mm": 43.0,
+        "middle_mm": 98.18350166906862,
+        "lower_mm": 146.24978632463024,
+        "thirds_ratio": [
+          0.14959993030223667,
+          0.34158709317493496,
+          0.5088129730437603
+        ],
+        "largest_third": "lower",
+        "width_height_ratio": 0.8650785322928342
+      },
+      "maxilla": {
+        "mouth_nose_ratio": 2.122498377595813,
+        "philtrum_length": 26.0
+      },
+      "lips": {
+        "total_lip_height": 39.92492955535426,
+        "mouth_opening": 5.0,
+        "classification": "full"
+      },
+      "basic_metrics": {
+        "interocular_distance": 62.369864518050704,
+        "face_height": 239.40133667128927,
+        "face_width": 248.65236777477105,
+        "jaw_width": 203.5018427434995,
+        "chin_width": 111.83022847155415,
+        "bizygomatic_width": 248.65236777477105,
+        "fwh_ratio": 1.0386423535979832,
+        "midface_length": 98.18350166906862,
+        "nose_length": 83.93449827097318,
+        "nose_width": 14.142135623730951,
+        "forehead_height_est": 73.0,
+        "left_eye_height": 21.0,
+        "right_eye_height": 15.0,
+        "eye_spacing": 47.055817918722866,
+        "eyebrow_spacing": 26.40075756488817,
+        "mouth_width": 30.01666203960727,
+        "jaw_width_norm": 0.8184190826923119,
+        "chin_width_norm": 0.4497452788096907,
+        "mouth_width_norm": 0.1207173786770304,
+        "bizygomatic_width_norm": 1.0,
+        "left_eye_height_norm": 0.33670106809230455,
+        "right_eye_height_norm": 0.24050076292307468,
+        "eye_spacing_norm": 0.7544640072948091,
+        "jaw_width_px": 203.5018427434995,
+        "jaw_width_rel_img": 0.28264144825486043
+      }
+    }
+  }
+}
