@@ -91,7 +91,7 @@ def compute_basic_metrics(landmarks, image_shape=None):
     metrics = {}
 
     # basic scales
-    interocular = (dist(36, 45) if len(lm) > 45 else 1.0)
+    interocular = (dist(41, 46) if len(lm) > 45 else 1.0)
     face_height = (dist(27, 8) if len(lm) > 8 else 1.0)
     face_width = (dist(1, 15) if len(lm) > 15 else 1.0)
 

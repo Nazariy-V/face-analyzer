@@ -68,7 +68,7 @@ def capture_two_frames():
     return front, side
 
 
-def record_segment(duration_sec, fps=15, preview_window_title='Recording', analyzer: FaceAnalyzer = None,
+def record_segment(duration_sec, fps: int = 15, preview_window_title='Recording', analyzer: FaceAnalyzer = None,
                    live_overlay=True, overlay_every=5, overlay_scale=0.5):
     """Record for duration_sec seconds, return frames list and timestamps and measured fps.
     If live_overlay and analyzer are provided, draw on-screen quality metrics and occasional landmark overlays.
