@@ -687,7 +687,10 @@ def main():
     parser.add_argument('--ffmpeg-preset', default='veryfast', help='x264 preset for ffmpeg writer')
     parser.add_argument('--use-nvenc', action='store_true', help='Prefer NVENC encoder when available')
     args = parser.parse_args()
-
+    device = 'cpu'
+    if _TORCH_AVAILABLE and _CUDA_AVAILABLE:
+        device = 'cuda'
+    analyzer = FaceAnalyzer(device=device)
     if args.record:
         # prepare output dir
         outdir = args.record_dir
@@ -696,10 +699,7 @@ def main():
             outdir = os.path.join('outputs', f'record_{tstamp}')
         pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
-        device = 'cpu'
-        if _TORCH_AVAILABLE and _CUDA_AVAILABLE:
-            device = 'cuda'
-        analyzer = FaceAnalyzer(device=device)
+        
 
         # Configure quality filtering
         quality_cfg = {
@@ -867,7 +867,7 @@ def main():
         print('All done. Recorded data placed in', outdir)
         return
     elif args.capture:
-        front, side = capture_two_frames()
+        front, side = capture_two_frames(analyzer)
     else:
         if not args.front or not args.side:
             parser.error('Either --capture or both --front and --side must be provided')
