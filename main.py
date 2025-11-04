@@ -20,20 +20,79 @@ except Exception:
     _CUDA_AVAILABLE = False
 
 
-def capture_two_frames():
-    """Quick capture: press SPACE to capture front, then SPACE for side."""
+def capture_two_frames(analyzer: FaceAnalyzer = None, live_overlay=True, overlay_every=5, overlay_scale=0.5):
+    """Quick capture: press SPACE to capture front, then SPACE for side.
+    When an analyzer is provided and live_overlay is True, draw landmarks and quick
+    image-quality metrics on the preview similar to recording mode.
+    """
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         raise RuntimeError('Could not open webcam')
 
     print('Press SPACE to capture FRONT frame')
     front = None
+    frame_idx = 0
+    last_overlay_lm = None
+    last_overlay_time = 0
     while True:
         ret, frame = cap.read()
         if not ret:
             break
+        now = time.time()
         disp = frame.copy()
-        cv2.putText(disp, 'Press SPACE to capture FRONT', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+        # compute quick metrics
+        try:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            blur_var = variance_of_laplacian(gray)
+            mean_b, std_c = brightness_and_contrast(gray)
+        except Exception:
+            blur_var = 0.0
+            mean_b, std_c = 0.0, 0.0
+
+        status = 'OK'
+        reasons = []
+        if blur_var < 100.0:
+            reasons.append('blur')
+            status = 'BAD'
+        if std_c < 10.0:
+            reasons.append('low_contrast')
+            status = 'BAD'
+        if mean_b < 30.0:
+            reasons.append('dark')
+            status = 'BAD'
+
+        cv2.putText(disp, f'Sharpness: {blur_var:.1f}', (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Brightness: {mean_b:.1f}', (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Contrast: {std_c:.1f}', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Quality: {status}', (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if status == 'OK' else (0, 0, 255), 2)
+        if reasons:
+            cv2.putText(disp, 'Reasons: ' + ','.join(reasons), (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+        # occasionally overlay landmarks when analyzer present
+        do_overlay = live_overlay and analyzer is not None and (frame_idx % max(1, overlay_every) == 0)
+        if do_overlay:
+            try:
+                if 0.0 < overlay_scale < 1.0:
+                    small = cv2.resize(frame, (0, 0), fx=overlay_scale, fy=overlay_scale)
+                else:
+                    small = frame
+                lm = analyzer.get_landmarks(small)
+                if lm and len(lm) > 0:
+                    if 0.0 < overlay_scale < 1.0:
+                        scaled_lm = [(int(x / overlay_scale), int(y / overlay_scale)) for (x, y) in lm]
+                    else:
+                        scaled_lm = [(int(x), int(y)) for (x, y) in lm]
+                    last_overlay_lm = scaled_lm
+                    last_overlay_time = now
+            except Exception:
+                last_overlay_lm = None
+
+        if last_overlay_lm is not None and (now - last_overlay_time) < 2.0:
+            for (x, y) in last_overlay_lm:
+                cv2.circle(disp, (int(x), int(y)), 1, (0, 255, 0), -1)
+
+        cv2.putText(disp, 'Press SPACE to capture FRONT', (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
         cv2.imshow('Capture FRONT', disp)
         k = cv2.waitKey(1) & 0xFF
         if k == 27:  # ESC
@@ -48,12 +107,68 @@ def capture_two_frames():
     input('Turn to SIDE and press Enter to start SIDE capture...')
     print('Press SPACE to capture SIDE frame')
     side = None
+    frame_idx = 0
+    last_overlay_lm = None
+    last_overlay_time = 0
     while True:
         ret, frame = cap.read()
         if not ret:
             break
+        now = time.time()
         disp = frame.copy()
-        cv2.putText(disp, 'Press SPACE to capture SIDE', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+
+        # compute quick metrics
+        try:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            blur_var = variance_of_laplacian(gray)
+            mean_b, std_c = brightness_and_contrast(gray)
+        except Exception:
+            blur_var = 0.0
+            mean_b, std_c = 0.0, 0.0
+
+        status = 'OK'
+        reasons = []
+        if blur_var < 100.0:
+            reasons.append('blur')
+            status = 'BAD'
+        if std_c < 10.0:
+            reasons.append('low_contrast')
+            status = 'BAD'
+        if mean_b < 30.0:
+            reasons.append('dark')
+            status = 'BAD'
+
+        cv2.putText(disp, f'Sharpness: {blur_var:.1f}', (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Brightness: {mean_b:.1f}', (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Contrast: {std_c:.1f}', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 0), 1)
+        cv2.putText(disp, f'Quality: {status}', (10, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if status == 'OK' else (0, 0, 255), 2)
+        if reasons:
+            cv2.putText(disp, 'Reasons: ' + ','.join(reasons), (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+        # occasionally overlay landmarks when analyzer present
+        do_overlay = live_overlay and analyzer is not None and (frame_idx % max(1, overlay_every) == 0)
+        if do_overlay:
+            try:
+                if 0.0 < overlay_scale < 1.0:
+                    small = cv2.resize(frame, (0, 0), fx=overlay_scale, fy=overlay_scale)
+                else:
+                    small = frame
+                lm = analyzer.get_landmarks(small)
+                if lm and len(lm) > 0:
+                    if 0.0 < overlay_scale < 1.0:
+                        scaled_lm = [(int(x / overlay_scale), int(y / overlay_scale)) for (x, y) in lm]
+                    else:
+                        scaled_lm = [(int(x), int(y)) for (x, y) in lm]
+                    last_overlay_lm = scaled_lm
+                    last_overlay_time = now
+            except Exception:
+                last_overlay_lm = None
+
+        if last_overlay_lm is not None and (now - last_overlay_time) < 2.0:
+            for (x, y) in last_overlay_lm:
+                cv2.circle(disp, (int(x), int(y)), 1, (0, 255, 0), -1)
+
+        cv2.putText(disp, 'Press SPACE to capture SIDE', (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
         cv2.imshow('Capture SIDE', disp)
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
